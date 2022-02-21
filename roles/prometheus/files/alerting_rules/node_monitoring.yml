@@ -1,0 +1,38 @@
+groups:
+- name: node_monitoring
+  rules:
+  - alert: HighCPUUsage
+    expr: 100 - (irate(node_cpu_seconds_total{mode="idle"}[5m]) * 100)  > 90
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Average CPU usage for 5 minutes exceeds 90%
+  - alert: HighMemoryUsage
+    expr: 100 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100)  > 90
+    labels:
+      severity: critical
+    annotations:
+      summary: Memory usage is over 90%
+  - alert: HighDiskUsage
+    expr: 100 - (node_filesystem_avail_bytes / node_filesystem_size_bytes * 100) > 90
+    labels:
+      severity: critical
+    annotations:
+      # summary: Disk usage is over 90%
+      # 異常時の通知メッセージ
+      firing_text: "disk of {{ $labels.instance }} is used over 90%"
+      # リカバリー時の通知メッセージ
+      resolved_text: "disk of {{ $labels.instance }} has recoverd."
+      description: "disk of {{ $labels.instance }} is used over 90%."
+  - alert: HighDiskUsage
+    expr: 100 - (node_filesystem_avail_bytes / node_filesystem_size_bytes * 100) > 30
+    labels:
+      severity: warning
+    annotations:
+      # summary: Disk usage is over 30%
+      # 異常時の通知メッセージ
+      firing_text: "disk of {{ $labels.instance }} is used over 30%"
+      # リカバリー時の通知メッセージ
+      resolved_text: "disk of {{ $labels.instance }} has recoverd."
+      description: "disk of {{ $labels.instance }} is used over 30%."

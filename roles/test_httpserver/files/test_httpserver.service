@@ -1,0 +1,11 @@
+[Unit]
+Description=test HTTP Srver.
+Documentation=https://github.com/kichiram/golang/http_server
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/bin/sh -c "/usr/local/bin/test_httpserver >> /var/log/test_httpserver.log 2>&1"
+
+[Install]
+WantedBy=multi-user.target

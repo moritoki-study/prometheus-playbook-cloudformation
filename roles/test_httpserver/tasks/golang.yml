@@ -1,0 +1,7 @@
+---
+- name: yum install go
+  yum:
+    name:
+      - golang-1.15.14
+    state: present # インストールされている場合はskip
+    # state: latest

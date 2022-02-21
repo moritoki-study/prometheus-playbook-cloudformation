@@ -1,0 +1,33 @@
+---
+# https://github.com/moritoki-study/prometheus_setup/blob/master/prometheus_setup.yml
+- name: initial-setup-confirm
+  stat:
+    path: /usr/local/bin/docker-compose
+  register: result # 存在していればresultという変数にTrueを、存在していなければFalseを格納します。
+- name: dockerインストール
+  yum:
+    name: docker-20.10.7
+    state: present
+#- name: dockerサービスの起動
+#  systemd:
+#    name: docker
+#    state: started
+#    enabled: yes
+- name: download docker-compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64
+    dest: /usr/local/bin/docker-compose
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: docker-compose 実行権限付与 
+  file:
+    path: /usr/local/bin/docker-compose
+    mode: 0755
+- name: dockerグループにec2-user追加 
+  user: 
+    name: ec2-user
+    groups: docker
+    append: yes
+- name: dockerサービスの再起動
+  systemd:
+    name: docker
+    state: restarted

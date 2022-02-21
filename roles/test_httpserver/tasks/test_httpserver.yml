@@ -1,0 +1,26 @@
+---
+- name: download test_httpserver.go
+  get_url:
+    url: https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
+    dest: /tmp
+- name: build
+  shell: |
+    go get github.com/prometheus/client_golang/prometheus
+    go build test_httpserver.go
+  args:
+    chdir: /tmp
+- name: update binary
+  copy:
+    src: /tmp/test_httpserver
+    dest: /usr/local/bin/
+    remote_src: yes # このyesオプションがないとサーバで探してくれない。ローカルを探す
+    mode: 0755
+- name: generate test_httpserver.service config file
+  copy:
+    src: test_httpserver.service
+    dest: /usr/lib/systemd/system/test_httpserver.service
+- name: test_httpserverサービスの再起動
+  systemd:
+    name: test_httpserver.service
+    state: restarted
+    enabled: yes

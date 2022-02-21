@@ -1,0 +1,5 @@
+---
+- include_tasks: prometheus.yml
+- include_tasks: blackbox_exporter.yml
+- include_tasks: alertmanager.yml
+- include_tasks: grafana.yml

@@ -1,0 +1,40 @@
+---
+- name: initial-setup-confirm
+  stat: 
+    path: /etc/prometheus/grok_exporter/grok_exporter.yml
+  register: result # 存在していればresultという変数にTrueを、存在していなければFalseを格納します。
+- name: download grok_exporter
+  get_url:
+    url: https://github.com/fstab/grok_exporter/releases/download/v0.2.8/grok_exporter-0.2.8.linux-amd64.zip
+    dest: /tmp
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: unarchive grok_exporter-0.2.8.linux-amd64.zip
+  unarchive:
+    src: /tmp/grok_exporter-0.2.8.linux-amd64.zip
+    dest: /tmp   # /tmp/grok_exporter-0.2.8.linux-amd64
+    remote_src: yes
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: grok_exporter directory created
+  file:
+    path: "/etc/prometheus/grok_exporter"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "775"
+- name: grok_exporterディレクトリに解凍したファイルを移動
+  shell: |
+    mv /tmp/grok_exporter-0.2.8.linux-amd64/* /etc/prometheus/grok_exporter
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: generate grok_exporter.service config file
+  copy:
+    src: grok_exporter.service
+    dest: /usr/lib/systemd/system/grok_exporter.service
+- name: generate grok_exporter config file
+  copy:
+    src: grok_exporter.yml
+    dest: /etc/prometheus/grok_exporter/grok_exporter.yml
+- name: grok_exporterサービスの再起動
+  systemd:
+    name: grok_exporter
+    state: restarted
+    enabled: yes

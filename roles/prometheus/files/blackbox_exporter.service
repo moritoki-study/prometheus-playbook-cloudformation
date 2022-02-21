@@ -1,0 +1,11 @@
+[Unit]
+Description=The blackbox exporter allows blackbox probing of endpoints over HTTP, HTTPS, DNS, TCP and ICMP.
+Documentation=https://github.com/prometheus/blackbox_exporter
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/etc/prometheus/blackbox_exporter/blackbox_exporter --config.file=/etc/prometheus/blackbox_exporter/blackbox_exporter.yml
+
+[Install]
+WantedBy=multi-user.target

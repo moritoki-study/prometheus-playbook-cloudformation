@@ -1,0 +1,10 @@
+groups:
+- name: blackbox # 死活監視
+  rules:
+  - alert: serviceDown
+    expr: probe_success == 0 # 0: 異常、1:正常
+    labels:
+      severity: critical
+    annotations:
+      # summaryだと回復時にもエラーメッセージが出るため見た目悪いようだ。異常時と回復時にメッセージを分けた方がよい。
+      summary: service is down # タイトルになる

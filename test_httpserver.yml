@@ -1,0 +1,9 @@
+---
+- name: deploy test_httpserver
+  hosts: test_httpserver
+  become: yes
+  roles:
+    - role: common
+      tags: common
+    - role: test_httpserver
+      tags: test_httpserver

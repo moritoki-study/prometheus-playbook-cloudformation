@@ -1,0 +1,11 @@
+[Unit]
+Description=The Prometheus Node Exporter exposes a wide variety of hardware- and kernel-related metrics.
+Documentation=https://github.com/prometheus/node_exporter
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/etc/prometheus/node_exporter/node_exporter
+
+[Install]
+WantedBy=multi-user.target

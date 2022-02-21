@@ -1,0 +1,18 @@
+---
+- name: generate grafana repo file
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/grafana.repo
+- name: grafanaインストール
+  yum:
+    name: grafana-8.2.2
+    state: present
+#- name: generate grafana config file
+#  copy:
+#    src: grafana.env
+#    dest:  /etc/grafana/grafana.env
+- name: grafanaサービスの再起動
+  systemd:
+    name: grafana-server
+    state: restarted
+    enabled: yes

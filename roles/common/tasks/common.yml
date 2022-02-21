@@ -1,0 +1,11 @@
+---
+- name: yum install multi-list
+  yum:
+    name:
+      - git
+    state: latest
+    # state: present
+#- name: yum Upgrade all packages
+#  yum:
+#    name: '*'
+#    state: latest

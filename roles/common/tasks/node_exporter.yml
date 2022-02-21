@@ -1,0 +1,36 @@
+---
+- name: initial-setup-confirm
+  stat: 
+    path: /etc/prometheus/node_exporter/node_exporter
+  register: result # 存在していればresultという変数にTrueを、存在していなければFalseを格納します。
+- name: download node_exporter
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.2.2/node_exporter-1.2.2.linux-amd64.tar.gz
+    dest: /tmp
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: unarchive node_exporter-1.2.2.linux-amd64.tar.gz
+  unarchive:
+    src: /tmp/node_exporter-1.2.2.linux-amd64.tar.gz
+    dest: /tmp   # /tmp/node_exporter-1.2.2.linux-amd64
+    remote_src: yes
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: prometheus directory created
+  file:
+    path: "/etc/prometheus/node_exporter"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "775"
+- name: node_exporterディレクトリに解凍したファイルを移動
+  shell: |
+    mv /tmp/node_exporter-1.2.2.linux-amd64/* /etc/prometheus/node_exporter
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: generate node_exporter.service config file
+  copy:
+    src: node_exporter.service
+    dest: /usr/lib/systemd/system/node_exporter.service
+- name: node_exporterサービスの再起動
+  systemd:
+    name: node_exporter
+    state: restarted
+    enabled: yes

@@ -1,0 +1,11 @@
+[Unit]
+Description=Alertmanager processes alerts sent by client applications such as the Prometheus server.
+Documentation=https://prometheus.io/docs/alerting/latest/alertmanager/
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/etc/prometheus/alertmanager/alertmanager --config.file=/etc/prometheus/alertmanager/alertmanager.yml --storage.path=/etc/prometheus/alertmanager/data
+
+[Install]
+WantedBy=multi-user.target

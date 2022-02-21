@@ -1,0 +1,11 @@
+[Unit]
+Description=Grok exporter - Export Prometheus metrics from arbitrary unstructured log data.
+Documentation=https://github.com/fstab/grok_exporter
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/etc/prometheus/grok_exporter/grok_exporter -config /etc/prometheus/grok_exporter/grok_exporter.yml
+
+[Install]
+WantedBy=multi-user.target

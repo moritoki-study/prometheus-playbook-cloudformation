@@ -1,0 +1,102 @@
+global:
+  # サーバーメトリクスの収集間隔
+  scrape_interval:     15s
+  # メトリクス収集のタイムアウト値
+  scrape_timeout: 10s
+  # 監視ルールの評価間隔
+  evaluation_interval: 15s
+
+  external_labels:
+    # AlertManagerの名前
+    monitor: 'alert-monitor'
+
+# 監視ルールファイルの場所
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+# <<訳>>globalで設定したevaluation_intervalに従って定期的に評価する。
+# <<解説>>Prometheusが取得したメトリクスに対する評価のルール設定ファイルを指定します。
+#        先に設定したevaluation_intervalの取得間隔で参照するファイルとなります。
+#        また、本ファイルがymlなので、記述順にルールの重みづけがされます。
+rule_files:
+  - /etc/prometheus/alerting_rules/alert_sample.yml
+  - /etc/prometheus/alerting_rules/blackbox.yml
+  - /etc/prometheus/alerting_rules/node_monitoring.yml
+  - /etc/prometheus/alerting_rules/test_httpserver_log.yml
+  - /etc/prometheus/alerting_rules/test_httpserver_request.yml
+
+# AlertManagerの設定
+# <<解説>> Prometheusサーバがアラート送信(push)するAlertmanagerインスタンスを指定します。
+#         また、Alertmanagerとの通信方法を設定するためのパラメータ設定も行えます。
+#         Alertmanagerはstatic_configsで静的に設定することも、サポートされている
+#         service検出メカニズムを使用して動的に検出することもできます。
+# https://tech-lab.sios.jp/archives/16604
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+          # AlertManagerを動作させているホストのIPアドレス/Host名:Port番号
+          - 127.0.0.1:9093 # これはdocker-composeのlabel。これで通信可能である ping alertmanager等。別ホストにalertmanagerのコンテナがある場合は無理
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+# <<解説>>targets: Prometheus が情報を取得する対象のホスト名もしくはIPアドレスと、ポート番号を設定する
+#        主な設定対象はexporter。
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus" # これはどういう監視なの？prometheusサーバからmetricsを取得できているかチェック？
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets:
+        -  127.0.0.1:9090
+
+# add to scrape_configs start
+  - job_name: "node_exporter" # これはどういう監視なの？node_exporterつまり(webサーバ）からmetricsを取得できているかチェック？job_name: "prometheus"と同じだよね？
+    static_configs:
+      - targets:
+        -  127.0.0.1:9100
+  - job_name: "blackbox_exporter_tcp" # おそらく死活監視 監視対象はWebサーバ？
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets:
+        - 127.0.0.1:8080 # 監視対象のWebサーバ？
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115 # blackbox_exporterが稼働するホスト？https://qiita.com/Esfahan/items/82dd496f1e150f089950
+  - job_name: "blackbox_exporter_http" # おそらく死活監視 監視対象はWebサーバ？
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - 127.0.0.1:8081/metrics # 監視対象のWebサーバ？
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115 # blackbox_exporterが稼働するホスト？
+  - job_name: "grok_exporter" # ログ監視？  (webサーバ）からmetricsを取得できているかチェック？
+    static_configs:
+      - targets: ["127.0.0.1:9144"] # 監視対象のWebサーバ？
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: ^go_.*
+        action: drop
+  - job_name: "test_httpserver" # (webサーバ）からmetricsを取得できているかチェック？
+    static_configs:
+      - targets: ["127.0.0.1:8081"] # 監視対象のWebサーバ？
+    metric_relabel_configs:
+      - source_labels: [__name__]
+        regex: ^a_.*
+        action: keep
+# add to scrape_configs end

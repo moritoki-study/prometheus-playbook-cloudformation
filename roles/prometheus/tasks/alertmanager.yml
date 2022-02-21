@@ -1,0 +1,40 @@
+---
+- name: initial-setup-confirm
+  stat: 
+    path: /etc/alertmanager/config.yml
+  register: result # 存在していればresultという変数にTrueを、存在していなければFalseを格納します。
+- name: download alertmanager
+  get_url:
+    url: https://github.com/prometheus/alertmanager/releases/download/v0.23.0/alertmanager-0.23.0.linux-amd64.tar.gz
+    dest: /tmp
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: unarchive alertmanager-0.23.0.linux-amd64.tar.gz
+  unarchive:
+    src: /tmp/alertmanager-0.23.0.linux-amd64.tar.gz
+    dest: /tmp   # /tmp/alertmanager-0.23.0.linux-amd64
+    remote_src: yes
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: alertmanager directory created
+  file:
+    path: "/etc/prometheus/alertmanager"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "775"
+- name: alertmanagerディレクトリに解凍したファイルを移動
+  shell: |
+    mv /tmp/alertmanager-0.23.0.linux-amd64/* /etc/prometheus/alertmanager
+  when: not result.stat.exists # resultがFalseの場合のみ処理を実行します。
+- name: generate alertmanager.service config file
+  copy:
+    src: alertmanager.service
+    dest: /usr/lib/systemd/system/alertmanager.service
+- name: generate alertmanager config file
+  copy:
+    src: alertmanager.yml
+    dest: /etc/prometheus/alertmanager/alertmanager.yml
+- name: alertmanagerサービスの再起動
+  systemd:
+    name: alertmanager
+    state: restarted
+    enabled: yes
