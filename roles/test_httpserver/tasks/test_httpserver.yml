@@ -14,7 +14,7 @@
     mode: "775"
 - name: GOPATH directory created
   file:
-    path: "/go"
+    path: "/home/ec2-user/go"
     state: directory
     owner: "root"
     group: "root"
