@@ -7,8 +7,8 @@
     # state: latest
 - name: copy goenv.sh
   copy:
-    src: "copy goenv.sh"
-    dest: "/etc/profile.d/copy goenv.sh"
+    src: "goenv.sh"
+    dest: "/etc/profile.d/goenv.sh"
     mode: 0755
     backup: no
     owner: root
