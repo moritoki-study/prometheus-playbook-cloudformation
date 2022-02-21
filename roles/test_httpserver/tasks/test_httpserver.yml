@@ -1,4 +1,25 @@
 ---
+- name: yum install go
+  yum:
+    name:
+      - golang-1.15.14
+    state: present # インストールされている場合はskip
+    # state: latest
+- name: grok_exporter directory created
+  file:
+    path: "/go"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "775"
+- name: copy goenv.sh
+  copy:
+    src: "goenv.sh"
+    dest: "/etc/profile.d/goenv.sh"
+    mode: 0755
+    backup: no
+    owner: root
+    group: root
 - name: download test_httpserver.go
   get_url:
     url: https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
