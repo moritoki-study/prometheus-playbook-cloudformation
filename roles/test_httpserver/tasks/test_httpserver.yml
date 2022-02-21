@@ -12,7 +12,6 @@
     owner: "root"
     group: "root"
     mode: "775"
-- name: copy goenv.sh
 - name: GOPATH directory created
   file:
     path: "/go"
