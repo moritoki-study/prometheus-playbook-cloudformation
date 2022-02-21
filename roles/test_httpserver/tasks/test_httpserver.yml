@@ -5,7 +5,15 @@
       - golang-1.15.14
     state: present # インストールされている場合はskip
     # state: latest
-- name: grok_exporter directory created
+- name: GOROOT directory created
+  file:
+    path: "/usr/local/go"
+    state: directory
+    owner: "root"
+    group: "root"
+    mode: "775"
+- name: copy goenv.sh
+- name: GOPATH directory created
   file:
     path: "/go"
     state: directory
