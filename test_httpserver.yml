@@ -1,6 +1,6 @@
 ---
 - name: deploy test_httpserver
-  hosts: test_httpserver
+  hosts: all
   become: yes
   roles:
     - role: common

@@ -1,3 +1,0 @@
----
-- import_playbook: prometheus.yml
-# - import_playbook: test_httpserver.yml

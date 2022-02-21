@@ -1,6 +1,6 @@
 ---
 - name: deploy prometheus server
-  hosts: all
+  hosts: all # allにしたら動いた。prometheusだと対象サーバが見つからないと
   become: yes
   roles:
     - role: common
