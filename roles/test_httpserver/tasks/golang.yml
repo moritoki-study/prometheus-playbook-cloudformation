@@ -16,7 +16,7 @@
   #loop:
   #  - { src: roles/go/files/goenv.sh, dest: . }
  
-- name: source /etc/profile.d/goenv.sh
-  shell: | 
-    bash -lc "source /etc/profile.d/goenv.sh" # -lはログイン状態のシェルで-cは引数のコマンドを実行する
-  ignore_errors: yes
+#- name: source /etc/profile.d/goenv.sh
+#  shell: | 
+#    bash -lc "source /etc/profile.d/goenv.sh" # -lはログイン状態のシェルで-cは引数のコマンドを実行する
+#  #ignore_errors: yes

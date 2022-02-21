@@ -3,10 +3,13 @@
   get_url:
     url: https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
     dest: /tmp
+- name: source /etc/profile.d/goenv.sh
+  shell: |
+    bash -lc "source /etc/profile.d/goenv.sh" # -lはログイン状態のシェルで-cは引数のコマンドを実行する
+  #ignore_errors: yes
 - name: go get 
-  shell: >  
-    bash -lc "go get -u github.com/prometheus/client_golang/prometheus"; # 追加する場合は行追加すればOK
-  ignore_errors: yes
+  shell: |  
+    bash -lc "go get -u github.com/prometheus/client_golang/prometheus" # 追加する場合は行追加すればOK
 - name: build
   shell: |
     go build test_httpserver.go
