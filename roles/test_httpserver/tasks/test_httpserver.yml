@@ -3,9 +3,12 @@
   get_url:
     url: https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
     dest: /tmp
+- name: go get 
+  shell: >  
+    bash -lc "go get -u github.com/prometheus/client_golang/prometheus"; # 追加する場合は行追加すればOK
+  ignore_errors: yes
 - name: build
   shell: |
-    go get github.com/prometheus/client_golang/prometheus
     go build test_httpserver.go
   args:
     chdir: /tmp
