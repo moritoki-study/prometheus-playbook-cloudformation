@@ -1,6 +1,6 @@
 ---
 - name: deploy prometheus server
-  hosts: prometheus
+  hosts: all
   become: yes
   roles:
     - role: common
