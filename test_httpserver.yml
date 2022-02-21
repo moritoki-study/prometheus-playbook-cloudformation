@@ -1,5 +1,6 @@
 ---
 - name: deploy test_httpserver
+  # remote_user: ec2-user
   hosts: all
   become: yes
   roles:
