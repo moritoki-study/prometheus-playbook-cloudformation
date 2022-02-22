@@ -35,10 +35,9 @@
 - name: update binary
   copy:
     src: /tmp/test_httpserver
-    dest: /usr/local/bin/
+    dest: /usr/local/bin/test_httpserver
     remote_src: yes # このyesオプションがないとサーバで探してくれない。ローカルを探す
     mode: 0755
-  become_user: ec2-user
 - name: generate test_httpserver.service config file
   copy:
     src: test_httpserver.service
