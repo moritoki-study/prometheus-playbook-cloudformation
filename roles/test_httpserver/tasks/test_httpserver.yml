@@ -7,13 +7,14 @@
     # state: latest
 - name: copy .bash_profile
   copy:
-    src: "bash_profile"
-    dest: "/home/ec2-user/.bash_profile"
+    src: "ec2-user.bash_profile"
+    dest: "~/.bash_profile"
+    # dest: "/home/ec2-user/.bash_profile"
     mode: 0755
     backup: no
     #owner: root
     #group: root
-  become_user: ec2-user
+  become_user: ec2-user # 環境変数の都合で設定
 - name: download test_httpserver.go
   get_url:
     url: https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
@@ -21,17 +22,17 @@
 - name: source /home/ec2-user/.bash_profile
   shell: |
     source /home/ec2-user/.bash_profile
-  become_user: ec2-user
+  become_user: ec2-user # 環境変数の都合で設定
 - name: go get
   shell: |
     go get -u github.com/prometheus/client_golang/prometheus
-  become_user: ec2-user
+  become_user: ec2-user # 環境変数の都合で設定
 - name: build
   shell: |
     go build test_httpserver.go
   args:
     chdir: /tmp
-  become_user: ec2-user
+  become_user: ec2-user # 環境変数の都合で設定
 - name: update binary
   copy:
     src: /tmp/test_httpserver
