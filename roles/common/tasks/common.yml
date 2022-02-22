@@ -3,6 +3,7 @@
   yum:
     name:
       - git
+      - nc
     state: latest
     # state: present
 #- name: yum Upgrade all packages
