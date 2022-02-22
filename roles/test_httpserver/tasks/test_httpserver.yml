@@ -13,6 +13,7 @@
     backup: no
     #owner: root
     #group: root
+  become_user: ec2-user
 - name: download test_httpserver.go
   get_url:
     url: https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
@@ -20,20 +21,24 @@
 - name: source /home/ec2-user/.bash_profile
   shell: |
     source /home/ec2-user/.bash_profile
+  become_user: ec2-user
 - name: go get
   shell: |
     go get -u github.com/prometheus/client_golang/prometheus
+  become_user: ec2-user
 - name: build
   shell: |
     go build test_httpserver.go
   args:
     chdir: /tmp
+  become_user: ec2-user
 - name: update binary
   copy:
     src: /tmp/test_httpserver
     dest: /usr/local/bin/
     remote_src: yes # このyesオプションがないとサーバで探してくれない。ローカルを探す
     mode: 0755
+  become_user: ec2-user
 - name: generate test_httpserver.service config file
   copy:
     src: test_httpserver.service
