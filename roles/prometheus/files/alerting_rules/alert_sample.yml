@@ -1,5 +1,6 @@
 # alertが出ることをFIRINGと呼ぶ。alertが出るとalertmanagerにデータ送られる
 # https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
+# node exporterのmetricを使う。http://<ホスト名>:9100/metrics
 groups: # アラートのグループ化をしないときは不要だと思う
 - name: example.com # example.comに関してのアラートをグループを作ったのだと思う。システム名やDNS名がいいのかな
   rules:

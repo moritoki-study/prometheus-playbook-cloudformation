@@ -1,3 +1,5 @@
+# http://<ホスト名>:8081/metrics
+# このmetricを送っているのはなんだ？ -> https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
 groups:
 - name: test_httpserver_request
   rules:

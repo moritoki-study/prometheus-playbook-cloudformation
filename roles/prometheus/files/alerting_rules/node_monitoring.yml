@@ -1,3 +1,5 @@
+# node exporterのメトリック
+# http://<ホスト名>:9100/metrics
 groups:
 - name: node_monitoring
   rules:

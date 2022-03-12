@@ -1,3 +1,5 @@
+# grok exporter
+# http://<ホスト名>:9144/metrics
 groups:
 - name: test_httpserver_log
   rules:
