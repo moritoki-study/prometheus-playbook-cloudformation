@@ -1,11 +1,20 @@
 # http://<ホスト名>:8081/metrics
 # このmetricを送っているのはなんだ？ -> https://raw.githubusercontent.com/kichiram/golang/main/testgo/test_httpserver.go
+# ここで検知したアラートをslackに出力する設定はalertmanager.ymlにあります。
 groups:
 - name: test_httpserver_request
   rules:
   - alert: HighRequest
+    # なんだろう。５分にworldのリクエスト送ればでるのかな
     expr: rate(a_http_request_count_total{instance="localhost:8081", job="test_httpserver", testlabel="World"}[5m]) > 0.01
     labels:
       severity: critical
     annotations:
-      summary: Request to world Page exceeded threshold
+      # ワールドページへのリクエストがしきい値を超えました
+      # summary: Request to world Page exceeded threshold
+      # 異常時の通知メッセージ
+      firing_text: "Request to world Page of {{ $labels.instance }} is exceeded threshold."
+      # リカバリー時の通知メッセージ
+      resolved_text: "Request to world Page of {{ $labels.instance }} has recoverd."
+      description: "Request to world Page of {{ $labels.instance }} is exceeded threshold."
+

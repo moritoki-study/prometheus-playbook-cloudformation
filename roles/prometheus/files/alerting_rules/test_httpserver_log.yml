@@ -1,11 +1,18 @@
 # grok exporter
 # http://<ホスト名>:9144/metrics
+# ここで検知したアラートをslackに出力する設定はalertmanager.ymlにあります。
 groups:
 - name: test_httpserver_log
   rules:
   - alert: EmptyNameFound
-    expr: increase(a_httpserver_log_hello_total{name=""}[1m]) > 0 # なんだろうか？
+    expr: increase(a_httpserver_log_hello_total{name=""}[1m]) > 0 # なんだろうか？１分間で１回でも出たらアラートだろう
     labels:
       severity: critical
     annotations:
-      summary: Outputs a log with an empty name
+      # 名前が空のログを出力します、意味がわからん
+      # summary: Outputs a log with an empty name
+      # 異常時の通知メッセージ
+      firing_text: "[log alert] Request to hello page of {{ $labels.instance }} is exceeded threshold."
+      # リカバリー時の通知メッセージ
+      resolved_text: "[log alert] Request to hello page of {{ $labels.instance }} has recoverd."
+      description: "[log alert] Request to hello page of {{ $labels.instance }} is exceeded threshold."

@@ -1,5 +1,6 @@
 # node exporterのメトリック
 # http://<ホスト名>:9100/metrics
+# ここで検知したアラートをslackに出力する設定はalertmanager.ymlにあります。
 groups:
 - name: node_monitoring
   rules:
@@ -9,13 +10,23 @@ groups:
     labels:
       severity: critical
     annotations:
-      summary: Average CPU usage for 5 minutes exceeds 90%
+      # summary: Average CPU usage for 5 minutes exceeds 90%
+      # 異常時の通知メッセージ
+      firing_text: "cpu of {{ $labels.instance }} is used over 90% for 5 minute."
+      # リカバリー時の通知メッセージ
+      resolved_text: "cpu of {{ $labels.instance }} has recoverd."
+      description: "cpu of {{ $labels.instance }} is used over 90% 5 minute."
   - alert: HighMemoryUsage
     expr: 100 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100)  > 90
     labels:
       severity: critical
     annotations:
-      summary: Memory usage is over 90%
+      # summary: Memory usage is over 90%
+      # 異常時の通知メッセージ
+      firing_text: "memory of {{ $labels.instance }} is used over 90%."
+      # リカバリー時の通知メッセージ
+      resolved_text: "memory of {{ $labels.instance }} has recoverd."
+      description: "memory of {{ $labels.instance }} is used over 90%."
   - alert: HighDiskUsage
     expr: 100 - (node_filesystem_avail_bytes / node_filesystem_size_bytes * 100) > 90
     labels:
@@ -23,7 +34,7 @@ groups:
     annotations:
       # summary: Disk usage is over 90%
       # 異常時の通知メッセージ
-      firing_text: "disk of {{ $labels.instance }} is used over 90%"
+      firing_text: "disk of {{ $labels.instance }} is used over 90%."
       # リカバリー時の通知メッセージ
       resolved_text: "disk of {{ $labels.instance }} has recoverd."
       description: "disk of {{ $labels.instance }} is used over 90%."
@@ -34,7 +45,7 @@ groups:
     annotations:
       # summary: Disk usage is over 30%
       # 異常時の通知メッセージ
-      firing_text: "disk of {{ $labels.instance }} is used over 30%"
+      firing_text: "disk of {{ $labels.instance }} is used over 30%."
       # リカバリー時の通知メッセージ
       resolved_text: "disk of {{ $labels.instance }} has recoverd."
       description: "disk of {{ $labels.instance }} is used over 30%."
