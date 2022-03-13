@@ -58,6 +58,20 @@ scrape_configs:
       - targets:
         # -  127.0.0.1:9100
         -  10.1.10.110:9100
+  - job_name: 'icmp_check' # ping監視
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets:
+        - 10.1.10.110:8080 # 監視対象のWebサーバ？
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: 127.0.0.1:9115 # blackbox_exporterが稼働するホスト？https://qiita.com/Esfahan/items/82dd496f1e150f089950
   - job_name: "blackbox_exporter_tcp" # おそらく死活監視 監視対象はWebサーバ？
     metrics_path: /probe
     params:

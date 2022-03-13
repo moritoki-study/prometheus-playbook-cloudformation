@@ -10,3 +10,4 @@ groups:
     annotations:
       # summaryだと回復時にもエラーメッセージが出るため見た目悪いようだ。異常時と回復時にメッセージを分けた方がよい。
       summary: service is down # タイトルになる
+
