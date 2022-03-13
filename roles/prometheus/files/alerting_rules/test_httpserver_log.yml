@@ -12,7 +12,7 @@ groups:
       # 名前が空のログを出力します、意味がわからん
       # summary: Outputs a log with an empty name
       # 異常時の通知メッセージ
-      firing_text: "[log alert] Request to hello page of {{ $labels.instance }} is exceeded threshold."
+      firing_text: "[log alert] Request to hello page of {{ $labels.instance }} is exceeded threshold(1 or more in 1 minute)"
       # リカバリー時の通知メッセージ
       resolved_text: "[log alert] Request to hello page of {{ $labels.instance }} has recoverd."
-      description: "[log alert] Request to hello page of {{ $labels.instance }} is exceeded threshold."
+      description: "[log alert] Request to hello page of {{ $labels.instance }} is exceeded threshold(1 or more in 1 minute)."

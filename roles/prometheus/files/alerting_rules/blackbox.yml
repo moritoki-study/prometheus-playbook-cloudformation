@@ -2,7 +2,7 @@
 # http://<ホスト名>:9115/metrics
 # ここで検知したアラートをslackに出力する設定はalertmanager.ymlにあります。
 groups:
-- name: blackbox # 死活監視
+- name: blackbox # 死活監視,icmpとhttpでこれが動いてる
   rules:
   - alert: serviceDown
     expr: probe_success == 0 # 0: 異常、1:正常 metricが見つからない.これもmetricsがこないときにこうなるのではなかろうか

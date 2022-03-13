@@ -5,16 +5,17 @@ groups:
 - name: test_httpserver_request
   rules:
   - alert: HighRequest
-    # なんだろう。５分にworldのリクエスト送ればでるのかな
-    expr: rate(a_http_request_count_total{instance="localhost:8081", job="test_httpserver", testlabel="World"}[5m]) > 0.01
+    # なんだろう。1分にworldのリクエスト送ればでるのかな
+    expr: rate(a_http_request_count_total{job="test_httpserver", testlabel="World"}[1m]) > 0.01
+    # expr: rate(a_http_request_count_total{instance="localhost:8081", job="test_httpserver", testlabel="World"}[5m]) > 0.01
     labels:
       severity: critical
     annotations:
       # ワールドページへのリクエストがしきい値を超えました
       # summary: Request to world Page exceeded threshold
       # 異常時の通知メッセージ
-      firing_text: "Request to world Page of {{ $labels.instance }} is exceeded threshold."
+      firing_text: "Request to world Page of {{ $labels.instance }} is exceeded threshold(0.01 more in 1 minute)."
       # リカバリー時の通知メッセージ
       resolved_text: "Request to world Page of {{ $labels.instance }} has recoverd."
-      description: "Request to world Page of {{ $labels.instance }} is exceeded threshold."
+      description: "Request to world Page of {{ $labels.instance }} is exceeded threshold(0.01 more in 1 minute)."
 

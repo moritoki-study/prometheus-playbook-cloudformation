@@ -1,10 +1,27 @@
 # matchするデータをa_httpserver_log_hello_totalとしてprometheusに送る
+# おそらくだが、別のログを監視したい場合、ymlを増やす必要がある。
+
+# これがわかりやすい
+# https://recruit.gmo.jp/engineer/jisedai/blog/prometheus-grok-log-monitoring/
+# https://grokdebug.herokuapp.com/
+
 # HTTPSERVER_HELLO_LOGはpatternディレクトリに定義されている
+
+# HTTPSERVER_TIMESTAMP [0-9]{4}/[0-9]{2}/[0-9]{2}%{SPACE}[0-9]{2}:[0-9]{2}:[0-9]{2}
+# HTTPSERVER_LOG %{HTTPSERVERTIMESTAMP}%{SPACE}%{NOTSPACE:message}
+# HTTPSERVER_HELLO Hello!
+# HTTPSERVER_HELLO_NAME .*
+# HTTPSERVER_HELLO_LOG %{HTTPSERVER_TIMESTAMP}%{SPACE}%{HTTPSERVER_HELLO}%{SPACE}%{HTTPSERVER_HELLO_NAME:name}
+# 
+# tail -f /var/log/test_httpserver.log
+# 2022/03/13 09:12:50 World
+# 2022/03/13 09:16:34 Hello!
+
 global:
     config_version: 2
 input:
     type: file
-    path: /var/log/test_httpserver.log
+    path: /var/log/test_httpserver.log # 監視対象のログ
     readall: false # Read from the beginning of the file? False means we start at the end of the file and read only new lines.
 
 grok:
@@ -13,8 +30,8 @@ metrics:
     - type: counter
       name: a_httpserver_log_hello_total
       help: Total number of Hello! message.
-      match: '%{HTTPSERVER_HELLO_LOG}'
+      match: '%{HTTPSERVER_HELLO_LOG}' # 2022/03/13 09:16:34 Hello! この形式のログがあるとアラートとなる。
       labels:
-          name: '{{.name}}'
+          name: '{{.name}}' # なんだこれは
 server:
     port: 9144
