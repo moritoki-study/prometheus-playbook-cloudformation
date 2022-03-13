@@ -5,7 +5,6 @@ cloudformationで実行するploybookです。使わないファイルは全部�
 ファイル（ディレクトリかも）が多いとcloudformationの制限にひっかかります。
 
 ## スタック作成コマンド
-
 ```
 aws cloudformation deploy \
     --template-file vpc-03_cloudfomation_ansible.yml \
@@ -13,6 +12,9 @@ aws cloudformation deploy \
     --notification-arns arn:aws:sns:ap-northeast-1:1234567890:cloudformation-use-sns-topic \
     --capabilities CAPABILITY_NAMED_IAM
 ```
-
-`1234567890`自分のawsアカウントID.１２桁のやつのやつ。UIから見れます。画面右上のアカウントクリック
+- Macから動かしてます。
+- awscliは事前に動く状態にしておくこと
+- stack-name は任意
+- `1234567890`自分のawsアカウントID.１２桁のやつのやつ。UIから見れます。画面右上のアカウントクリック
 `--capabilities CAPABILITY_NAMED_IAM` はおそらく、UIでスタック作成するときの最後につけているチェックになると思われる
+- stackを削除する前にUIから作ったバケットを空にしておくとスムーズに削除できる
