@@ -21,7 +21,7 @@ aws cloudformation deploy \
 - `notification-arns`はslack通知の設定事前にsns-topicを作っておく必要がある。
 - 10分ぐらいかかります。
 - https://api.slack.com/apps/A037GAQ0R4G/incoming-webhooks?
-- slackurlを直す
+- slackurlを直す.stackの削除と共になぜか消えている気がする
 ```
 vi prometheus-playbook-cloudformation/roles/prometheus/file/alertmanager.yml
 ```
