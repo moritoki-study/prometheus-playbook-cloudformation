@@ -41,3 +41,15 @@ sudo less /var/log/messages
 tail -f /var/log/test_httpserver.lo
 ```
 
+# 初期セットアップ完了後
+
+```
+cd prometheus-playbook-cloudformation
+ansible-playbook -i host_vars/prod.yml site.yml
+
+```
+
+codeチェック
+```
+ansible-lint site.yml
+```
