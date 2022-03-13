@@ -20,4 +20,9 @@ aws cloudformation deploy \
 - stackを削除する前にUIから作ったバケットを空にしておくとスムーズに削除できる
 - `notification-arns`はslack通知の設定事前にsns-topicを作っておく必要がある。
 - 10分ぐらいかかります。
+- https://api.slack.com/apps/A037GAQ0R4G/incoming-webhooks?
+- slackurlを直す
+```
+vi prometheus-playbook-cloudformation/roles/prometheus/file/alertmanager.yml
+```
 
