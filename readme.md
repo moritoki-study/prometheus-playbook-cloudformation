@@ -18,3 +18,5 @@ aws cloudformation deploy \
 - `1234567890`自分のawsアカウントID.１２桁のやつのやつ。UIから見れます。画面右上のアカウントクリック
 `--capabilities CAPABILITY_NAMED_IAM` はおそらく、UIでスタック作成するときの最後につけているチェックになると思われる
 - stackを削除する前にUIから作ったバケットを空にしておくとスムーズに削除できる
+- `notification-arns`はslack通知の設定事前にsns-topicを作っておく必要がある。
+
