@@ -4,7 +4,7 @@ amazon linux をansibleでセットアップするplaybook. protheusをテスト
 cloudformationで実行するploybookです。使わないファイルは全部削除しています
 ファイル（ディレクトリかも）が多いとcloudformationの制限にひっかかります。
 
-## スタック作成コマンド
+## 初期セットアップ（スタック作成コマンド）
 ```
 aws cloudformation deploy \
     --template-file vpc-03_cloudfomation_ansible.yml \
