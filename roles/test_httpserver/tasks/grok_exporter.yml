@@ -36,7 +36,7 @@
 - name: generate pattern file for test_httpserver
   copy:
     src: test_httpserver.pattern
-    dest: /etc/prometheus/grok_exporter/test_httpserver
+    dest: /etc/prometheus/grok_exporter/patterns/test_httpserver
 - name: grok_exporterサービスの再起動
   systemd:
     name: grok_exporter

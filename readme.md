@@ -23,6 +23,14 @@ aws cloudformation deploy \
 - https://api.slack.com/apps/A037GAQ0R4G/incoming-webhooks?
 - slackurlを直す.stackの削除と共になぜか消えている気がする
 ```
+# git
 vi prometheus-playbook-cloudformation/roles/prometheus/file/alertmanager.yml
+
+# serverで修正
+sudo vi /etc/prometheus/alertmanager/alertmanager.yml
+sudo systemctl restart alertmanager.service
+
+# serverのログ確認
+sudo less /var/log/messages
 ```
 
