@@ -45,8 +45,12 @@ tail -f /var/log/test_httpserver.lo
 
 ```
 cd prometheus-playbook-cloudformation
-ansible-playbook -i host_vars/prod.yml site.yml
 
+# サーバ設定(public dns)
+vi host_vars/prod.yml
+
+# ansible実行
+ansible-playbook -i host_vars/prod.yml site.yml
 ```
 
 codeチェック
