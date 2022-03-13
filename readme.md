@@ -19,4 +19,5 @@ aws cloudformation deploy \
 `--capabilities CAPABILITY_NAMED_IAM` はおそらく、UIでスタック作成するときの最後につけているチェックになると思われる
 - stackを削除する前にUIから作ったバケットを空にしておくとスムーズに削除できる
 - `notification-arns`はslack通知の設定事前にsns-topicを作っておく必要がある。
+- 10分ぐらいかかります。
 
