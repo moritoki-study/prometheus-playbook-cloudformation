@@ -1,7 +1,7 @@
 global:
   # Slack の webhook URL の指定 たまに無効になるらしいので再発行する
   # https://qiita.com/vmmhypervisor/items/18c99624a84df8b31008
-  slack_api_url: 'https://hooks.slack.com/services/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'
+  slack_api_url: 'https://hooks.slack.com/services/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'
 
 route:
   receiver: 'slack'
