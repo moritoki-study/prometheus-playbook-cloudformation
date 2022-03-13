@@ -21,7 +21,7 @@ aws cloudformation deploy \
 - `notification-arns`はslack通知の設定事前にsns-topicを作っておく必要がある。
 - 10分ぐらいかかります。
 - https://api.slack.com/apps/A037GAQ0R4G/incoming-webhooks?
-- slackurlを直す.stackの削除と共になぜか消えている気がする
+- slackurlを直す.stackの作成と共になぜか消えている気がする
 ```
 # git
 vi prometheus-playbook-cloudformation/roles/prometheus/file/alertmanager.yml
@@ -32,5 +32,12 @@ sudo systemctl restart alertmanager.service
 
 # serverのログ確認
 sudo less /var/log/messages
+```
+- https://slack.com/services/new/incoming-webhook
+こっちで作ると消えないのかも
+
+ログ監視用
+```
+tail -f /var/log/test_httpserver.lo
 ```
 
