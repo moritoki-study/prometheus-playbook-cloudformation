@@ -4,6 +4,7 @@
     name:
       - git
       - nc
+      - stress
     state: latest
     # state: present
 #- name: yum Upgrade all packages
